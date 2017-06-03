@@ -3,52 +3,27 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
     <title>Sboot Up!</title>
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <style>
-      #droppable {
-        height: 100px;
-        border: 3px dashed #ebebeb;
-      }
+    <link rel="stylesheet" href="css/main.css">
 
-      .draggable {
-        position: relative;
-        left: 35%;
-      }
-
-      .tier-container {
-        min-height: 425px;
-      }
-
-      .x-tier-title {
-
-      }
-
-      .x-tier-container {
-        height: 98%;
-        border: 3px dashed #ededed;
-        padding: 5px;
-      }
-
-      .sub-business-container {
-        float: left;
-        width: 50%;
-        padding: 0 2px;
-      }
-
-      .internal-business-container {
-        border: 1px dotted #ebebeb;
-        padding: 2px;
-      }
-
-      .tech-container {
-        background-color: #ebebeb;
-      }
-
-    </style>
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
+    <script type="application/javascript">
+        function getFormData($form){
+            var unindexed_array = $form.serializeArray();
+            var indexed_array = {};
+
+            $.map(unindexed_array, function(n, i){
+                indexed_array[n['name']] = n['value'];
+            });
+
+            return indexed_array;
+        }
+    </script>
   </head>
   <body>
     <div class="container">
@@ -57,6 +32,72 @@
           <p>Drop here</p>
         </div>
       </div>
+      <div class="row">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+          Launch demo modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              </div>
+              <div class="modal-body">
+                <form id="entity-form">
+                  <input id="counterProps" type="hidden" class="0">
+                  <div class="form-inline">
+                    <div class="form-group">
+                      <label for="entity-singlular">Singolare</label>
+                      <input type="text" class="form-control" id="entity-singlular" name="entity[name]" placeholder="persona, casa, indirizzo...">
+                    </div>
+                    <div class="form-group">
+                      <label for="entity-plural">Plurale</label>
+                      <input type="text" class="form-control" id="entity-plural" name="entity[collection]" placeholder="persone, case, indirizzi...">
+                    </div>
+                  </div>
+                  <hr>
+                  <button id="aggiungi-proprieta" type="button" class="btn btn">Aggiungi proprietà</button>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Proprieta</th>
+                        <th>Tipo</th>
+                        <th>PK</th>
+                        <th>x</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr id="0">
+                        <td><span class="form-group"><input type="text" name="entity[property0][name]" class="form-control" placeholder="nome, civico, data di nascita"></span></td>
+                        <td><span class="form-group"><select name="entity[property0][type]" class="form-control">
+                        <option>String</option>
+                        <option>Integer</option>
+                        <option>Long</option>
+                        <option>Double</option>
+                        <option>Date</option>
+                      </select>
+                    </span></td>
+                        <td><span class="form-group"><input id="cb_0" name="entity[property0][pk]" class="pk-indicator" type="checkbox"></span></td>
+                        <td><span id="lr_0" class="glyphicon glyphicon-remove line-remover"></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- chiude .row definizione entità -->
+
       <div class="row">
         <div class="col-lg-3 tier-container">
 
@@ -178,14 +219,51 @@
 
     </div><!-- chiude .container -->
     <script>
-        $( function() {
-            $("#droppable").droppable({
-                drop: function() {
-                    alert( "dropped" );
-                }
-            });
-            $( ".draggable" ).draggable({ helper: "clone" });
-        } );
+      $(document).ready(function() {
+          var lines = 1;
+
+          $("#droppable").droppable({
+              drop: function() {
+                  alert( "dropped" );
+              }
+          });
+          $( ".draggable" ).draggable({ helper: "clone" });
+
+          $('#aggiungi-proprieta').on('click', function(){
+              $('form table tbody').append('<tr id="'+lines+'">'+
+                  '<td><span class="form-group"><input type="text" name="property[]" class="form-control" placeholder="nome, civico, data di nascita"></span></td>'+
+                  '<td><span class="form-group"><select name="type[]" class="form-control">'+
+                  '<option>String</option>'+
+                  '<option>Integer</option>'+
+                  '<option>Long</option>'+
+                  '<option>Double</option>'+
+                  '<option>Date</option>'+
+                  '</select>'+
+                  '</span></td>'+
+                  '<td><span class="form-group"><input id="cb_'+lines+'" name="primarykey[]" class="pk-indicator" type="checkbox"></span></td>'+
+                  '<td><span id="lr_'+lines+'" class="glyphicon glyphicon-remove line-remover"></span></td>');
+              $('#counterProps').addClass(''+lines+'');
+              lines ++;
+          });
+
+          $('form table tbody').on('click','tr .line-remover',function(){
+              var r = $(this).prop('id').split('_')[1];
+              $(this).parent().parent().remove();
+              $('#counterProps').removeClass(r);
+          });
+
+          $('form table tbody').on('click','input[type="checkbox"].pk-indicator',function(e) {
+              var _this = $(this);
+              var a = $('form table tbody tr input[type="checkbox"].pk-indicator:checked');
+              for(var i=0;i<a.length;i++){
+                  var _item = $(a[i]);
+                  if(_item.prop('id') != _this.prop('id')){
+                    _item.prop('checked', false);
+                  }
+              }
+          });
+
+      });
     </script>
   </body>
 </html>
