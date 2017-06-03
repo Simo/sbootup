@@ -7,11 +7,14 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <style>
       #droppable {
-        width: 75%;
         height: 100px;
         border: 3px dashed #ebebeb;
       }
-      #draggable { width: 90%; height: 150px; padding: 0.8em; }
+
+      .draggable {
+        position: relative;
+        left: 35%;
+      }
 
       .tier-container {
         min-height: 425px;
@@ -24,7 +27,24 @@
       .x-tier-container {
         height: 98%;
         border: 3px dashed #ededed;
+        padding: 5px;
       }
+
+      .sub-business-container {
+        float: left;
+        width: 50%;
+        padding: 0 2px;
+      }
+
+      .internal-business-container {
+        border: 1px dotted #ebebeb;
+        padding: 2px;
+      }
+
+      .tech-container {
+        background-color: #ebebeb;
+      }
+
     </style>
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -39,37 +59,124 @@
       </div>
       <div class="row">
         <div class="col-lg-3 tier-container">
+
           <div class="presentation-tier-title x-tier-title">
             <h2>Presentation</h2>
           </div>
+
           <div class="presentation-tier-container x-tier-container" style="background-color: red">
-            <div class="famous-tiers">
-              <div class="tiers-container">
-                <div id="draggable" class="ui-widget-content">
-                  <p>Drag me around</p>
-                </div>
+
+            <div class="thymeleaf-container tech-container">
+              <div id="thymeleaf" class="draggable">
+                <img src="assets/thymeleaf.png" width="55">
               </div>
-            </div>
-          </div>
-        </div>
+              <div>
+                <h4>RESTful MVC</h4>
+                <p>Crea una struttura per CRUD completamente REST</p>
+              </div>
+            </div><!-- chiude .thymeleaf-container -->
+
+            <div class="angular-container tech-container">
+              <div id="angular" class="draggable">
+                <img src="assets/angular.svg" width="65">
+              </div>
+              <div>
+                <h4>Angular</h4>
+                <p>Genera un'applicazione Angular per il browser</p>
+              </div>
+            </div><!-- chiude .thymeleaf-container -->
+
+          </div><!-- chiude .presentation-tier-container -->
+
+        </div><!-- chiude .tier-container -->
         <div class="col-lg-6 tier-container">
-          <div class="presentation-tier-title x-tier-title">
+          <div class="business-tier-title x-tier-title">
             <h2>Business</h2>
           </div>
           <div class="business-tier-container x-tier-container" style="background-color: yellow">
 
+            <div class="sub-business-container">
+
+              <div class="ext-business-container internal-business-container">
+
+                <div class="springmvc-container tech-container">
+                  <div id="springmvc" class="draggable">
+                    <img src="assets/spring.png" width="65">
+                  </div>
+                  <div>
+                    <h4>RESTful MVC</h4>
+                    <p>Crea una struttura per CRUD completamente REST</p>
+                  </div>
+                </div><!-- chiude .springmvc-container -->
+
+                <div class="swagger-container tech-container">
+                  <div id="swagger" class="draggable">
+                    <img src="assets/swagger.png" width="65">
+                  </div>
+                  <div>
+                    <h4>Open API</h4>
+                    <p>Genera una API aderente agli standard Open API</p>
+                  </div>
+                </div><!-- chiude .swagger-container -->
+
+              </div><!-- chiude .ext-business-container -->
+
+            </div><!-- chiude .sub-business-container > .ext-business-container -->
+
+            <div class="sub-business-container">
+
+              <div class="int-business-container internal-business-container">
+
+                <div class="service-container tech-container">
+                  <div id="service" class="draggable">
+                    <img src="assets/services.png" width="65">
+                  </div>
+                  <div>
+                    <h4>Business Logic</h4>
+                    <p>Genera solo uno stack di classi per la gestione della BL</p>
+                  </div>
+                </div><!-- chiude .service-container -->
+
+                <div class="conversion-container tech-container">
+                  <div id="convertion" class="draggable">
+                    <img src="assets/convertion.png" width="65">
+                  </div>
+                  <div>
+                    <h4>DTO Convertion</h4>
+                    <p>Crea esclusivamente la struttura DTO a supporto della persistenza</p>
+                  </div>
+                </div><!-- chiude .convertion-container -->
+
+              </div><!-- chiude .int-business-container -->
+
+            </div><!-- chiude .sub-business-container > .int-business-container -->
+            <div style="clear: both"> </div>
           </div>
         </div>
+
         <div class="col-lg-3 tier-container">
+
           <div class="presentation-tier-title x-tier-title">
             <h2>Persistence</h2>
           </div>
+
           <div class="persistence-tier-container x-tier-container" style="background-color: green">
 
-          </div>
+            <div class="jpa-container tech-container">
+              <div id="hibernate" class="draggable">
+                <img src="assets/hibernate.png" width="65">
+              </div>
+              <div>
+                <h4>Hibernate</h4>
+                <p>Genera Entity e Repository in standard JPA con Hibernate</p>
+              </div>
+            </div><!-- chiude .jpa-container -->
+
+          </div><!-- chiude .x-tier-container -->
         </div>
       </div>
-    </div>
+
+    </div><!-- chiude .container -->
     <script>
         $( function() {
             $("#droppable").droppable({
@@ -77,7 +184,7 @@
                     alert( "dropped" );
                 }
             });
-            $( "#draggable" ).draggable();
+            $( ".draggable" ).draggable({ helper: "clone" });
         } );
     </script>
   </body>
