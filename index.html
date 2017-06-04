@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
 
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -48,7 +50,7 @@
               </div>
               <div class="modal-body">
                 <form id="entity-form">
-                  <input id="counterProps" type="hidden" class="0">
+                  <div id="counterProps" class="0" style="display: none"></div>
                   <div class="form-inline">
                     <div class="form-group">
                       <label for="entity-singlular">Singolare</label>
@@ -71,7 +73,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr id="0">
+                      <tr id="line_0">
                         <td><span class="form-group"><input type="text" name="entity[property0][name]" class="form-control" placeholder="nome, civico, data di nascita"></span></td>
                         <td><span class="form-group"><select name="entity[property0][type]" class="form-control">
                         <option>String</option>
@@ -90,8 +92,8 @@
                 </form>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" id="entity-form-reset">Reset</button>
+                <button type="button" class="btn btn-primary" id="entity-form-confirm">Conferma</button>
               </div>
             </div>
           </div>
@@ -217,6 +219,12 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 id="finalCommand"></h1>
+        </div>
+      </div>
+
     </div><!-- chiude .container -->
     <script>
       $(document).ready(function() {
@@ -230,9 +238,9 @@
           $( ".draggable" ).draggable({ helper: "clone" });
 
           $('#aggiungi-proprieta').on('click', function(){
-              $('form table tbody').append('<tr id="'+lines+'">'+
-                  '<td><span class="form-group"><input type="text" name="property[]" class="form-control" placeholder="nome, civico, data di nascita"></span></td>'+
-                  '<td><span class="form-group"><select name="type[]" class="form-control">'+
+              $('#entity-form table tbody').append('<tr id="line_'+lines+'">'+
+                  '<td><span class="form-group"><input type="text" name="entity[property'+lines+'][name]" class="form-control" placeholder="nome, civico, data di nascita"></span></td>'+
+                  '<td><span class="form-group"><select name="entity[property'+lines+'][type]" class="form-control">'+
                   '<option>String</option>'+
                   '<option>Integer</option>'+
                   '<option>Long</option>'+
@@ -240,19 +248,19 @@
                   '<option>Date</option>'+
                   '</select>'+
                   '</span></td>'+
-                  '<td><span class="form-group"><input id="cb_'+lines+'" name="primarykey[]" class="pk-indicator" type="checkbox"></span></td>'+
+                  '<td><span class="form-group"><input id="cb_'+lines+'" name="entity[property'+lines+'][pk]" class="pk-indicator" type="checkbox"></span></td>'+
                   '<td><span id="lr_'+lines+'" class="glyphicon glyphicon-remove line-remover"></span></td>');
               $('#counterProps').addClass(''+lines+'');
               lines ++;
           });
 
-          $('form table tbody').on('click','tr .line-remover',function(){
+          $('#entity-form table tbody').on('click','tr .line-remover',function(){
               var r = $(this).prop('id').split('_')[1];
               $(this).parent().parent().remove();
               $('#counterProps').removeClass(r);
           });
 
-          $('form table tbody').on('click','input[type="checkbox"].pk-indicator',function(e) {
+          $('#entity-form table tbody').on('click','input[type="checkbox"].pk-indicator',function(e) {
               var _this = $(this);
               var a = $('form table tbody tr input[type="checkbox"].pk-indicator:checked');
               for(var i=0;i<a.length;i++){
@@ -263,7 +271,57 @@
               }
           });
 
+          $('#entity-form-reset').on('click',resetForm);
+
+          function resetForm(){
+              $('#entity-form')[0].reset();
+              var ep = $('#counterProps').prop('class').split(' ').slice(1);
+              for(var i=0; i<ep.length;i++){
+                  $('#line_'+ep[i]).remove();
+                  $('#counterProps').removeClass(ep[i]);
+              }
+          }
+
+
+          $('#entity-form-confirm').on('click',function(){
+              var str = produceEntityOutput();
+              $('#finalCommand').text(str);
+          });
+
+          function checkEmptiness(prop){
+              var formObj = getFormData($('#entity-form'));
+              return !formObj[prop].trim();
+          }
+
+          function produceEntityOutput(){
+
+              var formObj = getFormData($('#entity-form'));
+              if(!checkEmptiness("entity[name]")){
+                  var str = "";
+                  str += formObj['entity[name]'];
+                  if(!checkEmptiness('entity[collection]')){
+                      str += ":"+formObj['entity[collection]'];
+                  }
+              }
+
+              var properties = $('#counterProps').prop('class').split(' ');
+
+              for(var i=0; i<properties.length; i++){
+                  if(!checkEmptiness('entity[property'+properties[i]+'][name]')){
+                      str += " "+formObj['entity[property'+properties[i]+'][name]']+":"+formObj['entity[property'+properties[i]+'][type]'];
+                      if(formObj['entity[property'+properties[i]+'][pk]'] == "on"){
+                          str += ":pk";
+                      }
+                  }
+              }
+
+              return str;
+          }
+
+
       });
+
+
     </script>
   </body>
 </html>
