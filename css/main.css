@@ -1,11 +1,70 @@
-#droppable {
+.hidden {
+    display: none;
+}
+
+.header {
+    height: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+.header > h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 72px;
+}
+
+#first-banner {
+    float: left;
+    position: relative;
+    top: -40px;
+    left: 40px;
+}
+
+.droppable {
+    width: 84%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     height: 100px;
-    border: 3px dashed #ebebeb;
+    border: 3px dashed #ddd;
+    box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ddd, 0 0 0 10px #fff, 0 0 2px 10px #eee;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.droppable > p {
+    font-family: 'Arima Madurai', cursive;
+    color: #dddddd;
+    font-size: 48px;
+    text-shadow: 4px 4px 4px #aaa;
+}
+
+.dropped {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100px;
+    /*border: 3px dashed #ddd;
+    box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ddd, 0 0 0 10px #fff, 0 0 2px 10px #eee;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;*/
+}
+
+.addUp {
+    font-family: 'Arima Madurai', cursive;
+    font-size: 48px;
+    position: relative;
+    top: 5px;
+}
+
+button {
+    font-family: 'Arima Madurai', cursive;
+    color: #dddddd;
 }
 
 .draggable {
-    position: relative;
-    left: 35%;
 }
 
 .tier-container {
@@ -13,13 +72,21 @@
 }
 
 .x-tier-title {
-    font-family: 'Pacifico', cursive;
+    font-family: 'Arima Madurai', cursive;
+    text-align: center;
 }
 
 .x-tier-container {
-    min-height: 350px;
+    min-height: 365px;
     border: 3px dashed #ededed;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
     padding: 5px;
+}
+
+.internal-presentation-container {
+    padding: 4px 0;
 }
 
 .sub-business-container {
@@ -31,8 +98,66 @@
 .internal-business-container {
     border: 1px dotted #ebebeb;
     padding: 2px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
 }
 
 .tech-container {
-    background-color: #ebebeb;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.tech-container-expl > h4 {
+    font-family: 'Arima Madurai', cursive;
+    font-size: 24px;
+}
+
+.tech-container-expl > p {
+    color: #aaaaaa;
+}
+
+#second-banner {
+    float: left;
+    position: relative;
+}
+
+#entity-definition {
+    margin: 20px 0px;
+    padding: 10px 0px;
+}
+
+.entity-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+#mymodallabel {
+    font-family: 'Arima Madurai', cursive;
+    font-size: 24px;
+}
+
+.amenities-pk {
+    position: relative;
+    top: 5px;
+    left: 15px;
+}
+
+.amenities-x {
+    position: relative;
+    top: 9px;
+    left: 10px;
+}
+
+.finalCommand {
+    display: flex;
+    justify-content: center;
+}
+
+#finalCommand {
+    font-family: 'Arima Madurai', cursive;
+    font-size: 24px;
 }
